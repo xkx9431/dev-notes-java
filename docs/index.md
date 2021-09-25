@@ -1,7 +1,5 @@
-# Dev notes 
+## Java development 
 
-Some notes for dev.
-
----
-
-<small>Last update: {{ git.date.strftime('%Y-%m-%d') }}</small>
+### JVM
+### Spring Boot
+### MQ

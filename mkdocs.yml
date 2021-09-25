@@ -1,10 +1,10 @@
 site_name: Dev notes
-site_url: https://xkx9431.github.io/dev-notes/
+site_url: https://xkx9431.github.io/dev-notes-java/
 site_author: Xu Kaixuan
-site_description: Some notes for daily dev,  k8s, java, micro service, react, cloud native ...
+site_description: Some notes for daily dev for java related
 
-repo_name: dev-notes
-repo_url: https://github.com/xkx9431/dev-notes
+repo_name: dev-notes-java
+repo_url: https://github.com/xkx9431/dev-notes-java
 edit_uri: edit/main/docs/
 
 copyright: Copyright &copy; 2021 XKX
@@ -88,13 +88,11 @@ extra:
 
 nav:
   - Home: index.md
-  - Java Dev:
-    - Overview: java-dev/index.md
-    - JVM:
-      - JVM Overview: java-dev/jvm/index.md
-      - Memory Management:
-        - Memory Management Overview: java-dev\jvm\memory-management\overview.md
-        - Introduction: java-dev\jvm\memory-management\introduction.md
+  - JVM:
+    - JVM Overview: jvm/index.md
+    - Memory Management:
+      - Memory Management Overview: jvm\memory-management\overview.md
+      - Introduction: jvm\memory-management\introduction.md
 
 
 
