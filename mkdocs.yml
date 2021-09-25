@@ -1,10 +1,10 @@
 site_name: Kubernates internal
-site_url: https://xkx9431.github.io/mkdocs-demo/
+site_url: https://xkx9431.github.io/dev-notes/
 site_author: Xu Kaixuan
-site_description: Some notes for dive into k8s, for cloud native developer.
+site_description: Some notes for daily dev,  k8s, java, micro service, react, cloud native ...
 
 repo_name: k8s-internal
-repo_url: https://github.com/xkx9431/mkdocs-demo
+repo_url: https://github.com/xkx9431/dev-notes
 edit_uri: edit/main/docs/
 
 copyright: Copyright &copy; 2021 XKX
