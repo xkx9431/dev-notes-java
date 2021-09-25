@@ -65,6 +65,16 @@ markdown_extensions:
   - pymdownx.tabbed
   - pymdownx.tilde
 
+plugins:
+  - search
+  - minify:
+      minify_html: true
+  - awesome-pages
+  - macros
+  # https://squidfunk.github.io/mkdocs-material/setup/setting-up-tags/
+  # - tags:
+  #     tags_file: tags.md
+
 extra:
   social:
     - icon: fontawesome/brands/github
