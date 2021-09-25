@@ -1,0 +1,67 @@
+site_name: Kubernates internal
+site_url: https://xkx9431.github.io/mkdocs-demo/
+site_author: Xu Kaixuan
+site_description: Some notes for dive into k8s, for cloud native developer.
+
+repo_name: k8s-internal
+repo_url: https://github.com/xkx9431/mkdocs-demo
+edit_uri: edit/main/docs/
+
+copyright: Copyright &copy; 2021 XKX
+
+theme:
+  name: material
+  icon:
+    logo: material/book-open-page-variant
+    repo: fontawesome/brands/github
+  features:
+  # https://squidfunk.github.io/mkdocs-material/reference/code-blocks/#adding-annotations
+  - content.code.annotate
+  - navigation.indexes
+  - navigation.instant
+  - navigation.tabs
+  - navigation.tabs.sticky
+  - navigation.top
+  - navigation.tracking
+  - search.highlight
+  - search.share
+  - search.suggest
+  palette:
+  - scheme: default
+    primary: indigo
+    accent: indigo
+    toggle:
+      icon: material/toggle-switch-off-outline
+      name: Switch to dark mode
+  - scheme: slate
+    primary: blue
+    accent: blue
+    toggle:
+      icon: material/toggle-switch
+      name: Switch to light mode
+
+markdown_extensions:
+  - admonition
+  - codehilite
+  - footnotes
+  - toc:
+      permalink: true
+  - pymdownx.arithmatex
+  - pymdownx.betterem:
+      smart_enable: all
+  - pymdownx.caret
+  - pymdownx.critic
+  - pymdownx.details
+  - pymdownx.emoji:
+      emoji_index: !!python/name:materialx.emoji.twemoji
+      emoji_generator: !!python/name:materialx.emoji.to_svg
+  - pymdownx.inlinehilite
+  - pymdownx.magiclink
+  - pymdownx.mark
+  - pymdownx.smartsymbols
+  - pymdownx.superfences
+  - pymdownx.tasklist:
+      custom_checkbox: true
+  - pymdownx.tabbed
+  - pymdownx.tilde
+
