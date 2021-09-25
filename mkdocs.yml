@@ -3,7 +3,7 @@ site_url: https://xkx9431.github.io/dev-notes/
 site_author: Xu Kaixuan
 site_description: Some notes for daily dev,  k8s, java, micro service, react, cloud native ...
 
-repo_name: k8s-internal
+repo_name: dev-notes
 repo_url: https://github.com/xkx9431/dev-notes
 edit_uri: edit/main/docs/
 
@@ -65,3 +65,43 @@ markdown_extensions:
   - pymdownx.tabbed
   - pymdownx.tilde
 
+extra:
+  social:
+    - icon: fontawesome/brands/github
+      link: https://github.com/xkx9431
+    - icon: fontawesome/brands/zhihu
+      link: https://www.zhihu.com/people/triumphxu
+    - icon: fontawesome/brands/linkedin
+      link: https://www.linkedin.com/in/%E5%87%AF%E6%97%8B-%E8%A8%B1-983884103/
+    # - icon: fontawesome/brands/blog
+    #   link: https://xkx9431.github.io/xkx_blog/
+
+nav:
+  - Home: index.md
+  - Java Dev:
+    - Overview: java-dev/index.md
+    - JVM:
+      - JVM Overview: java-dev/jvm/index.md
+      - Memory Management:
+        - Memory Management Overview: java-dev\jvm\memory-management\overview.md
+        - Introduction: java-dev\jvm\memory-management\introduction.md
+
+
+
+
+# nav:
+#   - Home: index.md
+#   - Internals:
+#     - Overview: overview.md
+#     # - Tags: tags.md
+#     - SparkEnv: SparkEnv.md
+#     - SparkConf: SparkConf.md
+#     - SparkContext: SparkContext.md
+#     - Local Properties: local-properties.md
+#     - Inside Creating SparkContext: SparkContext-creating-instance-internals.md
+#     - SparkStatusTracker: SparkStatusTracker.md
+#     - SparkFiles: SparkFiles.md
+#     - Configuration Properties: configuration-properties.md
+#     - Spark Properties: spark-properties.md
+#     - External Shuffle Service:
+#       - external-shuffle-service/index.md
