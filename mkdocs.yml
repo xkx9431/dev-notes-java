@@ -91,7 +91,7 @@ nav:
   - JVM:
     - JVM Overview: jvm/index.md
     - Memory Management:
-      - jvm/mm-overview.md
+      - Memory Management: jvm/mm-overview.md
       - Introduction: jvm/mm-introduction.md
 
 
