@@ -89,7 +89,7 @@ extra:
 nav:
   - Home: index.md
   - JVM:
-    - JVM Overview: jvm/index.md
+    - JVM: jvm/index.md
     - Memory Management:
       - Memory Management: jvm/mm-overview.md
       - Introduction: jvm/mm-introduction.md
