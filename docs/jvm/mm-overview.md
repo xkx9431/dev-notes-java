@@ -1,2 +1,7 @@
 
-Understanding the Java Virtual Machine: Memory Management. I am a developer at SAP LABs China now. One of the core aspects of the Java virtual machine is memory management, and it's important to understand how memory management works in Java if you want your applications to perform as well as possible. Java has different garbage collectors, and each behaves differently and has different characteristics. Some of the major topics we'll cover in this course include understanding how the different garbage collectors work, understanding Eden, survivor, and tenured spaces used by the garbage collector, see the tools that you can use to monitor the garbage collector, and learn how to interact with the garbage collector using reference classes and the cleaner class. This article aims that  you can  understand how the different garbage collector works in Java and how to interact with the garbage collector. 
+# 了解Java虚拟机--内存管理。
+Java虚拟机的核心之一是内存管理，如果你想让你的应用程序尽可能地表现良好，那么了解内存管理在Java中的工作方式是很重要的。Java有不同的垃圾收集器，每个垃圾收集器的行为都不同，有不同的特点。本文要讨论的一些主要内容包括：
+1. 了解不同的垃圾收集器是如何工作的，
+2. 了解垃圾收集器使用的Eden、survivor和tenured spaces，
+3. 监控垃圾收集器的工具，并学习如何使用引用类和cleaner类与垃圾收集器进行交互。
+4. Java中不同的垃圾收集器是如何工作的，以及如何与垃圾收集器进行交互。
