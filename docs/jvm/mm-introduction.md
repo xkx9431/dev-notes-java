@@ -40,8 +40,132 @@
 这里我们有一个简单的内存块的图。在左边，我们有一个引用的根集。因此，这些是我们可以从一些根机制中跟踪的引用，也许是堆栈，它们指向活的内存。如果我们遵循根集的引用，任何引用另一个对象的对象也会保持该对象的活力。在标记阶段，垃圾收集器将从根集开始，依次走过每个对象，跟踪它的所有引用，标记内存中仍然活着的每个对象。注意，我们在这里可以有循环，而这些循环并不影响垃圾收集器。因此，如果一个对象引用了另一个对象，但它们没有根引用，这段内存可以被收集。在擦除阶段，垃圾被带走了，这就使得所有还在内存中的对象仍然被引用。然后，最后，这些内存被压缩。所以在这一点上，我们已经改变了内存的物理地址，这是关于垃圾收集器的一个重要观点。在Java这样的应用程序中，我们往往没有对对象的物理引用。我们在应用程序中会有一些引用，Java虚拟机在内部能够使用这些引用来获得这块内存的实际物理位置。但对我们来说，要真正得到那个物理位置是非常困难的。对于复制的垃圾收集器，事情略有不同。通常仍然有一个标记阶段和一个扫描阶段。所以在这里，比如说，我们有，一个内存块。这是在左边分配的，这就是我们当前所有对象被分配的地方。垃圾收集器的工作方式通常是当这个叫做fromspace的内存块变满时，垃圾收集器就会运行。同样，它遵循根集，并从根集开始标记所有的活对象。但是现在，在擦除阶段发生的事情是，这些对象被移到tospace中，因此同时被压缩。最后，从空间被清空。tospace和fromspace现在被交换了。下一块被分配的内存会被分配到这个新的fromspace中。最后，当它变得满了，整个过程又发生了。
 ![compact gc](../../images/jvm/compact_gc.png)
 
-### Generational Garbage Collection
-We also have the idea of generational garbage collectors, and the idea here is that once an object survives a garbage collection, that object is promoted to a different generation. The garbage collector will sweep through the young generations more often than it sweeps through the older generations. And depending on the environment, there could be any number of different generations. So in Java, for example, there's two. In .NET, there are three. Again. in different environments, there might be two or more generations where the garbage collector manages to collect memory. So with the generational garbage collector, again similar to before, we have a block of memory into which we're allocating our objects. And again, that memory has become full. This is now our first generation or young generation. In that generation, we've allocated memory. Notice we also have an old generation where there may be objects that may be alive, may not be alive. Once the GC runs, all the objects, in this case 1, 2, 3, and 4, that survive a garbage collect will be moved to the old generation. We can then clear the young generation and then carry on allocating objects inside the young generation.
+### 代际垃圾收集器
+我们也有*代际垃圾收集器*的想法，这里的想法是，一旦一个对象在一次垃圾收集中幸存下来，这个对象就会被提升到新的（old）世代。垃圾收集器scan年轻一代的次数会比scan老一代的次数多。而根据环境的不同，可能会有任何数量的不同世代。例如，在Java中，有两个。在.NET中，有三个。同样，在不同的环境中，可能有两代或更多的垃圾收集器管理收集内存。因此，对于一代又一代的垃圾收集器，同样与之前类似，我们有一个内存块，我们将对象分配到其中。这个内存已经满了。
+![gen before gc](../../images/jvm/gen_before_gc.png)
+![gen after gc](../../images/jvm/gen_after_gc.png)
+现在是我们的第一代或年轻一代。在这一代中，我们已经分配了内存。请注意，我们还有一个老一代的对象，可能是活的，也可能是不活的。一旦GC运行，所有的对象，在本例中是1、2、3、4，在垃圾回收中存活的对象将被移到旧一代。然后我们可以清除年轻一代，然后继续在年轻一代中分配对象。
 
-### Demonstrating How the Garbage Collection Works
-So what I'd like to do is to run some code that's going to allocate some memory and then take the address of that memory in Java and print out the address of the memory. And the idea behind this is that as we print these addresses, we'll see that the memory address rises as we allocate more and more objects. And then eventually, the garbage collector will run and, at that point, will collect all the memory. The next allocation will go back to the same address as the previous allocation or close to the previous allocation at least. We have some code here. Let me run this first, and then I'll take you through the code. So the application is called Sawtooth. It's very simple. We're going to run this with a classpath. And if I run this code, we just see it prints out a large stream of numbers. And at the moment, just by looking at those numbers, we can't see too much. But those numbers are the addresses of the objects as they are being allocated. So let me kill that. If I come back into the code, we can see how this is going to work. So we're allocating an object called GCMe. And GCMe is defined here. GCMe is simply a large object. There's many longs in here. In fact, there are 18 of them. So that makes this quite a large object. And the reason for that is that when we allocate this, if it was a small object, we need to allocate many, many thousands of them before the garbage collector kicked in. As it's larger, we need to allocate fewer objects before the garbage collector kicks in. So if I look at the code that allocates the objects, you'll see there's a loop. Inside the loop, we allocate a new object, GCMe. We take the address of the object, you'll see how we do that in a moment, and then simply print out that address. To take the address of the object, we have a helper method called addressOf that just gets given an object. And this helper uses the Unsafe class. Now Unsafe is part of sun.misc.Unsafe. This is not a standard part of the Java runtime. It's an undocumented class, but you'll find this used quite often, and it's quite possible that this class will be included officially in the Java 9 runtime. There are many websites out there that tell us how to use Unsafe. But essentially, we have to get a reference to a singleton class. We can't do that directly as the class is a private constructor, and there's also security checks in place to stop us creating instances of this class. Once we have a reference to the class, we can then use it to get the address of an object. And here we're just seeing if the address size is 4 or 8, so I'll be running on the 32‑bit environment or 64‑bit environment and then using either getInt to get the address or getLong to get the address. And we simply return that address. So that's all the code is doing. So if we run this code again, we'll see the same output, again not very interesting. But what I'd like to do is to run this code and capture that output to a file. And we'll give this file a CSV extension so it'll act like a comma‑separated variable file. So I'll just call this out.csv. Once that file has being created, we can check the contents by using cat on out.csv, and that displays the same date as we saw being printed to the console. Again, not very exciting. However, what we can do is load that data into Excel. So in Excel, if we open up out.csv, again, all we see is a column of numbers. Now what we can do is if I highlight that column and insert a line graph, so I go to Graphs, Line, and that'll take that data. And as we can see, we got a sawtooth graph. And what this is showing is that we start allocating memory at a certain place inside the address space. We keep allocating, allocating, allocating, allocating. Eventually, we'll try and allocate some memory. We'll have no more space to allocate it. The garbage collector will kick in, that will free up the memory, and the next time we allocate memory is at some lower location inside the address space. And again, we run through the same process. We keep allocating until the garbage collector kicks in. And then when that happens, we run again, the GC runs, and we allocate the next piece of memory at the lowest point inside the address space, and off we go again. So hopefully this illustrates very simply what the GC is doing inside this application. We'll see later in this course that a far more sophisticated tool is out there for showing the garbage collector, but this is a nice, simple approach for showing what's happening.
+### Demo
+
+编写以下代码， 运行
+```sh
+java -cp path com.demo.Sawtooth > out.csv
+```
+得到的`out。csv`  制作数据可以得到
+![demo gc](../../images/jvm/demo_gc.png)
+
+
+```java
+package com.demo;
+
+import java.lang.reflect.Field;
+
+import sun.misc.Unsafe;
+
+public class Sawtooth {
+    private static Unsafe unsafe;
+
+    static {
+        try {
+            Field field = Unsafe.class.getDeclaredField("theUnsafe");
+            field.setAccessible(true);
+            unsafe = (Unsafe) field.get(null);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static long addressOf(Object o) throws Exception {
+        Object[] array = new Object[]{o};
+
+        long baseOffset = unsafe.arrayBaseOffset(Object[].class);
+        int addressSize = unsafe.addressSize();
+        long objectAddress;
+        switch (addressSize) {
+            case 4:
+                objectAddress = unsafe.getInt(array, baseOffset);
+                break;
+            case 8:
+                objectAddress = unsafe.getLong(array, baseOffset);
+                break;
+            default:
+                throw new Error("unsupported address size: " + addressSize);
+        }
+
+        return (objectAddress);
+    }
+
+
+public static void main(String... args) throws Exception {
+    for (int i = 0; i < 32000; i++) {
+        Object mine = new GCMe();
+        long address = addressOf(mine);
+        System.out.println(address);
+    }
+
+
+    //Verify address works - should see the characters in the array in the output
+    //printBytes(address, 31);
+
+}
+
+    public static void printBytes(long objectAddress, int num) {
+        for (long i = 0; i < num; i++) {
+            int cur = unsafe.getByte(objectAddress + i);
+            System.out.print((char) cur);
+        }
+        System.out.println();
+    }
+}
+
+class GCMe {
+    long data;
+    long __;
+    long ___;
+    long ____;
+    long _____;
+    long ______;
+    long _______;
+    long ________;
+    long _________;
+    long __________;
+    long ___________;
+    long ____________;
+    long _____________;
+    long ______________;
+    long _______________;
+    long _________________;
+    long __________________;
+}
+
+
+```
+
+```java
+package com.demo;
+
+public class AllocateSpeed {
+    public static void main(String... args) throws Exception {
+        int i = 0;
+        while (true) {
+            new GCMe2();
+            i++;
+            // 5000000 with finalization
+            // 500000000 without
+            if(i % 5000000 == 0){
+                System.out.printf(".");
+            }
+        }
+    }
+
+}
+
+class GCMe2 {
+    @Override
+    protected void finalize() throws Throwable {
+        super.finalize();
+    }
+}
+
+```
