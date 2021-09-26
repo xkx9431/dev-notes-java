@@ -93,7 +93,7 @@ nav:
     - Memory Management:
       - Memory Management: jvm/mm-overview.md
       - Introduction: jvm/mm-introduction.md
-
+      - GC Internals: jvm/mm-gc-works-internals.md
 
 
 
