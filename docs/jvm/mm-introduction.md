@@ -12,12 +12,13 @@
 
 在Java 7中，G1垃圾收集器被引入。它实际上是在Java 6中产生的，但在Java 7中，它被正式提出。在Java 6中，它只是实验性的。所以在Java 9中，CMS垃圾收集器被弃用了，`finalizers`被弃用了，还有一个叫做`cleaner`的东西被引入了。但我在课程中仍然涵盖了所有这些东西。所以我仍然会提到`finalizes`，因为它们在Java 8中仍然被广泛使用。我仍然会提到CMS垃圾收集器，因为它仍然在Java 8中被广泛使用。我谈论`G1`垃圾收集器，因为那是从Java 7开始使用的。我还提到了`cleaner`，因为它从Java 9开始就被使用了。因此，希望无论你使用哪个版本的Java，都可以在本文了解差异。
 
-+ Things changed in Java 7
-  - G1 garbage collector introduced
-+ Things changed in Java 9
-  - CMS garbage collector deprecated
-  - Finalizers deprecated
-  - Cleaner introduced
+!!! Notes
+    + Things changed in Java 7
+        - G1 garbage collector introduced
+    + Things changed in Java 9
+        - CMS garbage collector deprecated
+        - Finalizers deprecated
+        - Cleaner introduced
 
 ### 不同类型的垃圾回收器
 目前存在不同弄类型的垃圾收集器。
