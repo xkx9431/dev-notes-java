@@ -98,7 +98,8 @@ nav:
     - 并发: concurrency/index.md 
     - 高级Java并发模式:
       - 高级Java并发模式: concurrency/cp-overview.md
-      - Introducing the Executor Pattern, Futures and Callables: concurrency/excutor-future-callable.md
+      - Executor Pattern, Futures and Callables: concurrency/excutor-future-callable.md
+      - 在生产者/消费者模式中使用锁和semaphores : concurrency/lock-sema-pro-con.md
 
 
 
