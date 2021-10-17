@@ -5,9 +5,9 @@
 #### 介绍一下 Executor，以及Runnable模式的问题
 让我们开始第一部分，关于Executor模式。首先，让我们看一下这段代码。这段代码是Runnable模式的一个实际例子。首先，一个任务是Runnable接口的一个实例。由于这个Runnable接口是一个功能接口，我们可以用一个lambda表达式来实现它。然后，我们创建一个新的线程类的实例，并将这个Runnable作为参数传递给这个对象的构造。最后，我们在这个Thread对象上调用start方法，这将产生在一个新的线程中执行runnable的效果，从而执行这个任务。现在让我们仔细看看这个模式，并尝试了解它的问题所在。第一点是，线程是由用户根据需求创建的。这个用户是一个开发者。现在的风险是，每个人都可以自由地创建新的线程，你可能最终会在你的应用程序中创建成千上万的线程，从而扼杀它。这个想法不是一个好主意。第二，为每个任务创建一个新的线程，当任务完成后，该线程就会死亡。这就是这种启动方法的工作方式。问题是，线程可能是操作系统给的资源，而我们都知道，这些资源无论是创建还是杀死都很昂贵。因此，事实上，这种模式，即使从纯技术角度看是可行的，也不是那么好，不应该在实际应用中使用。事实上，如果你正在开发的是一个Java EE应用程序，你根本就不应该使用它。在Java EE应用程序中，你不允许自己创建新的线程。
 ```java
-Runnable task= () -> System.out.println(“Hello world!”);
-Thread thread= newThread(task);
-thread.start();
+    Runnable task= () -> System.out.println('Hello world!');
+    Thread thread= newThread(task);
+    thread.start();
 ```
 
 #### 定义Executor模式。一种启动线程的新模式
@@ -17,41 +17,41 @@ Executor模式的第一个目标正是要解决这些问题。因此，首先，
 在Java中，一个线程池是一个Executor接口的实例。这个Executor接口非常简单。它只有一个方法，即execute，它需要一个可运行的任务。我们不需要自己去实现这个接口。在JDK中有几个现成的实现。我们有第二个接口，叫做ExecutorService，它扩展了Executor。ExecutorService比Executor多了大约10个方法，但事实上，事实证明，Executor的所有实现也是ExecutorService的实现。两个接口的实现都是一样的。为了创建这些实现的实例，我们有一个名为Executors的工厂类，其中的S有大约20个方法来创建Executor。例如，让我们建立一个只有一个线程的线程池。我们可以使用Executors类中的newSingleThreadExecutor工厂方法。这个线程池是如何工作的呢？事实上，当我们创建它时，这个线程也被创建了，只要这个线程池还活着，它就会一直活着。然后，当我们把一个任务传递给这个ExecutorService时，这个任务就会在这个线程中执行，一旦这个任务完成，这个线程就会被销毁。这就带来了一个问题：我们要如何释放这个ExecutorService的线程。事实上，在ExecutorService中，有一组关闭方法，我们将在这一部分的最后看到。
 
 ```java
-public interface Executor {
-    void execute(Runnabletask);
-}
+    public interface Executor {
+        void execute(Runnabletask);
+    }
 
-public interface ExecutorService extends Executor {
-    // 11 more methods
-}
+    public interface ExecutorService extends Executor {
+        // 11 more methods
+    }
 ```
 
 #### Runnable 和 Executor Service  模式
 我们不会看到Executors工厂类的所有方法。我们将在本模块的现场编码部分看到几个例子。这个类中最常用的两个方法是以下几个。第一个是newSingleThreadExecutor，用来创建一个只有一个线程的线程池。当你只想在另一个线程中执行一个任务时，它对于反应式编程非常有用。第二个是FixedThreadPoolExecutor。它是一个线程池，你可以固定线程的数量，在这个例子中是8。好了，我们可以在一个单线程上创建一个执行器，然后像我们刚才那样创建一个可运行的任务，并将这个任务传递给执行器。将要发生的事情是，执行器将接受这个任务，因为它只有一个线程，所以将在这个线程中执行这个任务。当这个任务完成后，这个线程就可以用来执行另一个任务了。所以我们可以比较这两种模式。在第一种模式中，我们将任务传递给执行器。在第二种模式中，我们将任务传递给一个新的线程实例。所以基本上，Executor模式不会创建一个新的线程，这正是我们想要做的，但行为是一样的。执行方法的调用和启动方法的调用都将立即返回，任务将在未来的某个时间在另一个线程中执行。
 
 ```java
-ExecutorService singleThreadExecutor =Executors.newSingleThreadExecutor();
-ExecutorService multipleThreadsExecutor = Executors.newFixedThreadPoolExecutor(8);
+    ExecutorService singleThreadExecutor =Executors.newSingleThreadExecutor();
+    ExecutorService multipleThreadsExecutor = Executors.newFixedThreadPoolExecutor(8);
 
-//
-Executor executor= Executors.newSingleThreadExecutor();
-Runnable task= () -> System.out.println("I run!");
-executor.execute(task);
+    //
+    Executor executor= Executors.newSingleThreadExecutor();
+    Runnable task= () -> System.out.println("I run!");
+    executor.execute(task);
 
-// Executor pattern
-executor.execute(task);
-// Runnable pattern
-newThread(task).start();
+    // Executor pattern
+    executor.execute(task);
+    // Runnable pattern
+    newThread(task).start();
 ```
 
 现在假设我们运行这段代码。我们在单线程上创建一个Executor，创建一个需要一定时间执行的第一个任务，以及一个也需要一定时间执行的第二个任务，我们将这两个任务提交给同一个Executor。所以很明显，task2将不得不等待task1的完成。因此，为了处理这种情况，一个Executor，不管它是否是单线程的，都要有等待队列。现在，这个等待队列被精确地指定。它是如何工作的呢？首先，当没有线程可用时，一个任务被添加到等待队列中。因此，假设我们有一个建立在全线程上的ExecutorService，而且所有的线程都很忙。如果一个新的任务被提交，它将被添加到这个等待队列中。第二条规则是，任务是按照提交的顺序来执行的。所以在我们的例子中，我们可以保证任务1在任务2之前被执行。这对于我们的任务排序是非常重要的。但当然，还可以提出更多问题。首先，我们能否知道一个任务是否已经完成。第二个问题，我们能否取消一个任务的执行。第一个问题的答案是否定的。事实上，在这种情况下，当我们使用runnable时，不可能通过查询Executor来知道某个任务是否被执行。第二，我们能否取消任务的执行。在某种程度上，我们可以。事实上，我们能做的是将一个任务从等待队列中移除。如果任务已经被线程启动，那么就不可能取消它。
 
 ```java
-Executor executor= Executors.newSingleThreadExecutor();
-Runnable task1= () -> someReallyLongProcess();
-Runnablet ask2= () -> anotherReallyLongProcess();
-executor.execute(task1);
-executor.execute(task2);
+    Executor executor= Executors.newSingleThreadExecutor();
+    Runnable task1= () -> someReallyLongProcess();
+    Runnablet ask2= () -> anotherReallyLongProcess();
+    executor.execute(task1);
+    executor.execute(task2);
 
 // Can we know if a task is done or not? No…
 // Can we cancel the execution of a task? Yes, if the task has not started yet
