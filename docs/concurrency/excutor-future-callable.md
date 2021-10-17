@@ -5,7 +5,7 @@
 #### Runnable模式的问题
 让我们开始第一部分，关于Executor模式。首先，让我们看一下这段代码。这段代码是Runnable模式的一个实际例子。首先，一个任务是Runnable接口的一个实例。由于这个Runnable接口是一个功能接口，我们可以用一个lambda表达式来实现它。然后，我们创建一个新的线程类的实例，并将这个Runnable作为参数传递给这个对象的构造。最后，我们在这个Thread对象上调用start方法，这将产生在一个新的线程中执行runnable的效果，从而执行这个任务。现在让我们仔细看看这个模式，并尝试了解它的问题所在。第一点是，线程是由用户根据需求创建的。这个用户是一个开发者。现在的风险是，每个人都可以自由地创建新的线程，你可能最终会在你的应用程序中创建成千上万的线程，从而扼杀它。这个想法不是一个好主意。第二，为每个任务创建一个新的线程，当任务完成后，该线程就会死亡。这就是这种启动方法的工作方式。问题是，线程可能是操作系统给的资源，而我们都知道，这些资源无论是创建还是杀死都很昂贵。因此，事实上，这种模式，即使从纯技术角度看是可行的，也不是那么好，不应该在实际应用中使用。事实上，如果你正在开发的是一个Java EE应用程序，你根本就不应该使用它。在Java EE应用程序中，你不允许自己创建新的线程。
 ```java
-    Runnable task= () -> System.out.println('Hello world!');
+    Runnable task= () -> System.out.println("Hello world!");
     Thread thread= newThread(task);
     thread.start();
 ```
@@ -154,30 +154,30 @@ public class PlayingWithCallablesAndFutures {
 
 ```
 !!! Notes
-    1.  newSingleThreadExecutor()-an executor with only one thread
-    2. newFixedThreadPool(poolSize)-an executor with poolSizethreads
-    3. newCachedThreadPool()-creates threads on demand-keeps unused threads for 60s-then terminates them
-    4. newScheduledThreadPool(poolSize)-creates a pool of threads-returns a ScheduledExecutorService
+    1.  newSingleThreadExecutor()-an executor with only one thread  
+    2. newFixedThreadPool(poolSize)-an executor with poolSizethreads  
+    3. newCachedThreadPool()-creates threads on demand-keeps unused threads for 60s-then terminates them  
+    4. newScheduledThreadPool(poolSize)-creates a pool of threads-returns a ScheduledExecutorService  
 
 !!! Notes
-    The ScheduledExecutorService:
-       -  schedule(task, delay)
-       - scheduleAtFixedRate(task, delay, period)
-       - scheduleWithFixedDelay(task, initialDelay, delay)
+    The ScheduledExecutorService:  
+       -  schedule(task, delay)    
+       - scheduleAtFixedRate(task, delay, period)  
+       - scheduleWithFixedDelay(task, initialDelay, delay)  
 
 !!! Notes An ExecutorServiceneeds to be properly shutdown
-        1) shutdown()
-        - continue to execute all submitted tasks,
-        - execute waiting tasks,
-        - do not accept new tasks-then shutdown
-        1) shutdownNow()
-        - halt the running tasks,
-        -  do not execute waiting tasks,
-        -  then shutdown
-        1) awaitTermination(timeout)
-        - shutdown()
-        - wait for the timeout,
-        - if there are remaining tasks, then halt everything
+        1) shutdown()  
+        - continue to execute all submitted tasks,  
+        - execute waiting tasks,  
+        - do not accept new tasks-then shutdown  
+        1) shutdownNow()  
+        - halt the running tasks,  
+        -  do not execute waiting tasks,  
+        -  then shutdown  
+        1) awaitTermination(timeout)  
+        - shutdown()  
+        - wait for the timeout,  
+        - if there are remaining tasks, then halt everything  
 
 
 
