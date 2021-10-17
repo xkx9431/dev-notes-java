@@ -94,10 +94,10 @@ nav:
       - Memory Management: jvm/mm-overview.md
       - Introduction: jvm/mm-introduction.md
       - GC Internals: jvm/mm-gc-works-internals.md
-  - Concurrency:
-    - Concurrency: concurrency/index.md
-    - 高级Java并发模式: concurrency/cp-overview.md
-    - Introducing the Executor Pattern, Futures and Callables: concurrency/excutor-future-callable.md
+  - 并发:
+    - Concurrency: concurrency/index.md 
+      - 高级Java并发模式: concurrency/cp-overview.md
+      - Introducing the Executor Pattern, Futures and Callables: concurrency/excutor-future-callable.md
 
 
 
