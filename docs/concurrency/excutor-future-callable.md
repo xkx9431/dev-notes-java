@@ -153,29 +153,31 @@ public class PlayingWithCallablesAndFutures {
 }
 
 ```
->  1) newSingleThreadExecutor()-an executor with only one thread
->  2) newFixedThreadPool(poolSize)-an executor with poolSizethreads
->  3) newCachedThreadPool()-creates threads on demand-keeps unused threads for 60s-then terminates them
->  4) newScheduledThreadPool(poolSize)-creates a pool of threads-returns a ScheduledExecutorService
+!!! Notes
+      1) newSingleThreadExecutor()-an executor with only one thread
+      2) newFixedThreadPool(poolSize)-an executor with poolSizethreads
+      3) newCachedThreadPool()-creates threads on demand-keeps unused threads for 60s-then terminates them
+      4) newScheduledThreadPool(poolSize)-creates a pool of threads-returns a ScheduledExecutorService
 
+!!! Notes
+    The ScheduledExecutorService:
+    -  schedule(task, delay)
+    - scheduleAtFixedRate(task, delay, period)
+    - scheduleWithFixedDelay(task, initialDelay, delay)
 
-The ScheduledExecutorService:
--  schedule(task, delay)
-- scheduleAtFixedRate(task, delay, period)
-- scheduleWithFixedDelay(task, initialDelay, delay)
-
-An ExecutorServiceneeds to be properly shutdown
-1) shutdown()
-   - continue to execute all submitted tasks,
-   - execute waiting tasks,
-   - do not accept new tasks-then shutdown
-2) shutdownNow()
-   - halt the running tasks,
-   -  do not execute waiting tasks,
-   -  then shutdown
-3) awaitTermination(timeout)
-   - shutdown()
-   - wait for the timeout,
-   - if there are remaining tasks, then halt everything
+!!! Notes
+    An ExecutorServiceneeds to be properly shutdown
+    1) shutdown()
+    - continue to execute all submitted tasks,
+    - execute waiting tasks,
+    - do not accept new tasks-then shutdown
+    1) shutdownNow()
+    - halt the running tasks,
+    -  do not execute waiting tasks,
+    -  then shutdown
+    1) awaitTermination(timeout)
+    - shutdown()
+    - wait for the timeout,
+    - if there are remaining tasks, then halt everything
 
 
