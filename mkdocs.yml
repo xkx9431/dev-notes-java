@@ -94,6 +94,10 @@ nav:
       - Memory Management: jvm/mm-overview.md
       - Introduction: jvm/mm-introduction.md
       - GC Internals: jvm/mm-gc-works-internals.md
+  - Concurrency:
+    - Concurrency: concurrency/index.md
+    - Concurrency Pattern: concurrency/cp-overview.md
+    - Introducing the Executor Pattern, Futures and Callables: concurrency/mm-introduction.md
 
 
 
