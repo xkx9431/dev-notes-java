@@ -96,8 +96,8 @@ nav:
       - GC Internals: jvm/mm-gc-works-internals.md
   - Concurrency:
     - Concurrency: concurrency/index.md
-    - Concurrency Pattern: concurrency/cp-overview.md
-    - Introducing the Executor Pattern, Futures and Callables: concurrency/mm-introduction.md
+    - 高级Java并发模式: concurrency/cp-overview.md
+    - Introducing the Executor Pattern, Futures and Callables: concurrency/excutor-future-callable.md
 
 
 
