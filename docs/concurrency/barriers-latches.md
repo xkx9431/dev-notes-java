@@ -326,7 +326,7 @@ java.util.concurrent.BrokenBarrierException
 ```
 
 
-#### future超时和任务取消
+#### 3.future超时和任务取消
 第二种处理方式如下。我们已经从这个await调用中删除了超时，我们可以在这个future.get调用上再放一个超时。让我们把它放在200 MILLISECONDS。这个版本的get方法可以抛出一个TimeoutException，所以我们要在周围的try TimeoutException附近添加一个catch，这里只是打印出Timed out。让我们运行这段代码。这里我们可以看到，我们的问题只得到了部分解决。为什么？因为我们所有的future都已经超时了，所以我们的主线程不再等待任何结果了。但是我们的任务仍然在等待屏障打开，我们的两个未执行的任务仍然在ExecutorService中等待，我们可以看到这里JVM仍然在运行，因为线程仍然在ExecutorService中运行，执行任务。所以给这个get方法计时并不总是取消正在运行的任务，即相应的运行任务，在这种情况下，它只是一个部分解决方案。用这个解决方案完全处理这种情况的正确方法是，一旦抛出这个TimeoutException，通过调用future.cancel取消相应的任务，并传递true，因为我们要中断当前运行的任务和在ExecutorService中等待可用线程的任务。如果我们按原样运行这段代码，在我们的应用程序已经正常退出的情况下，它将起作用，所以这意味着ExecutorService已经被关闭，所有的任务都被取消了，但如果我们想更准确地看到它，我们需要用一个try catch来包围这段代码，在这里捕获InterruptedException，打印出一个消息，比如说Interrupted，并返回nok。如果我们到达代码的这一点，让我们再次运行这段代码，现在我们可以看到每个任务都超时了，然后被取消方法的调用打断。
 ```java
 
