@@ -102,6 +102,7 @@ nav:
       - 在生产者/消费者模式中使用锁和semaphores : concurrency/lock-sema-pro-con.md
       - 使用 Barriers 和 Latches 控制并发的应用程序 : concurrency/barriers-latches.md
       - 了解 CAS 和原子变量 : concurrency/cas-atomic.md
+      - Concurrent Collections and Maps : concurrency/concurrent-collections.md
 
 
 
